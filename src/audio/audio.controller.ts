@@ -8,14 +8,17 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  UseGuards,
 } from "@nestjs/common";
 import { AudioService } from "./audio.service";
 import { CreateAudioDto } from "./dto/create-audio.dto";
 import { UpdateAudioDto } from "./dto/update-audio.dto";
 import { diskStorage } from "multer";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { AuthMiddleware } from "src/middlewares/auth-middleware";
 
 @Controller("audio")
+@UseGuards(AuthMiddleware)
 export class AudioController {
   constructor(private readonly audioService: AudioService) {}
 

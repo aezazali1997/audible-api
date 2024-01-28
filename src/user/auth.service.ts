@@ -29,4 +29,12 @@ export class AuthService {
 
     return { accessToken };
   }
+  async validateToken(token: string): Promise<any> {
+    try {
+      const decoded = this.jwtService.verify(token);
+      return decoded;
+    } catch (error) {
+      throw new UnauthorizedException("Invalid token");
+    }
+  }
 }
