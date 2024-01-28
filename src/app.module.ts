@@ -27,7 +27,7 @@ import { AudioService } from "./audio/audio.service";
       },
     ]),
     JwtModule.register({
-      secret: "your-secret-key",
+      secret: "secret-101",
       signOptions: { expiresIn: "1h" },
     }),
     AudioModule,

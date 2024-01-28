@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestMiddleware, NestModule } from "@nestjs/common";
 import { AudioService } from "./audio.service";
 import { AudioController } from "./audio.controller";
 import { Audio, AudioSchema } from "./audio.model";
@@ -7,6 +7,7 @@ import { AuthService } from "src/user/auth.service";
 import { UserService } from "src/user/user.service";
 import { JwtModule } from '@nestjs/jwt'; 
 import { User, UserSchema } from "src/user/user.model";
+import { AuthMiddleware } from "src/middlewares/auth-middleware";
 
 
 @Module({
@@ -22,11 +23,16 @@ import { User, UserSchema } from "src/user/user.model";
       }
     ]),
      JwtModule.register({
-      secret: 'your_secret_key', 
-      signOptions: { expiresIn: '24h' }, 
+      secret: 'secret-101', 
+      signOptions: { expiresIn: '1h' }, 
     }),
   ],
   controllers: [AudioController],
   providers: [AudioService,AuthService,UserService],
 })
-export class AudioModule {}
+export class AudioModule implements NestModule {
+  configure(consumer:MiddlewareConsumer){
+        consumer.apply(AuthMiddleware).forRoutes(AudioController);
+
+  }
+}
